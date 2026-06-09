@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: annapurna-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cafesystem
+      MYSQL_USER: cafeuser
+      MYSQL_PASSWORD: cafeuser123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - cafe-network
+
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - mysql-db
+  #   networks:
+  #     - cafe-network
+
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - cafe-network
+
+volumes:
+  mysql-data:
+
+networks:
+  cafe-network:
