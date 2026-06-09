@@ -35,23 +35,23 @@ export default function AdminDashboard() {
   }, [router]);
 
   const fetchTables = () => {
-    fetch('http://localhost:8080/api/tables').then(res => res.json()).then(setTables);
+    fetch('https://annapurna-cafe.onrender.com/api/tables').then(res => res.json()).then(setTables);
   };
 
   const fetchOrders = () => {
-    fetch('http://localhost:8080/api/orders')
+    fetch('https://annapurna-cafe.onrender.com/api/orders')
       .then(res => res.json())
       .then(data => setOrders(data));
   };
 
   const fetchMenu = () => {
-    fetch('http://localhost:8080/api/categories').then(res => res.json()).then(setCategories);
-    fetch('http://localhost:8080/api/products').then(res => res.json()).then(setProducts);
+    fetch('https://annapurna-cafe.onrender.com/api/categories').then(res => res.json()).then(setCategories);
+    fetch('https://annapurna-cafe.onrender.com/api/products').then(res => res.json()).then(setProducts);
   };
 
   const connectWebSockets = () => {
     const client = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      webSocketFactory: () => new SockJS('https://annapurna-cafe.onrender.com/ws'),
       onConnect: () => {
         client.subscribe('/topic/orders', (message) => {
           const updatedOrder = JSON.parse(message.body);
@@ -75,20 +75,20 @@ export default function AdminDashboard() {
   };
 
   const updateOrderStatus = async (id: number, status: string) => {
-    await fetch(`http://localhost:8080/api/orders/${id}/status?status=${status}`, { method: 'PUT' });
+    await fetch(`https://annapurna-cafe.onrender.com/api/orders/${id}/status?status=${status}`, { method: 'PUT' });
     fetchOrders(); // refresh
   };
 
   const generateBill = async (id: number) => {
-    const res = await fetch(`http://localhost:8080/api/bills/generate/${id}`, { method: 'POST' });
+    const res = await fetch(`https://annapurna-cafe.onrender.com/api/bills/generate/${id}`, { method: 'POST' });
     if (res.ok) {
       const data = await res.json();
-      window.open(`http://localhost:8080/api/bills/download/${data.id}`, '_blank');
+      window.open(`https://annapurna-cafe.onrender.com/api/bills/download/${data.id}`, '_blank');
     }
   };
 
   const addCategory = async () => {
-    await fetch('http://localhost:8080/api/categories', {
+    await fetch('https://annapurna-cafe.onrender.com/api/categories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newCat, description: '' })
@@ -99,12 +99,12 @@ export default function AdminDashboard() {
 
   const deleteCategory = async (id: number) => {
     if (!confirm('Are you sure you want to delete this category?')) return;
-    await fetch(`http://localhost:8080/api/categories/${id}`, { method: 'DELETE' });
+    await fetch(`https://annapurna-cafe.onrender.com/api/categories/${id}`, { method: 'DELETE' });
     fetchMenu();
   };
 
   const addProduct = async () => {
-    await fetch('http://localhost:8080/api/products', {
+    await fetch('https://annapurna-cafe.onrender.com/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...newProd, price: parseFloat(newProd.price), available: true, initialStock: 100 })
@@ -115,14 +115,14 @@ export default function AdminDashboard() {
 
   const deleteProduct = async (id: number) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
-    await fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' });
+    await fetch(`https://annapurna-cafe.onrender.com/api/products/${id}`, { method: 'DELETE' });
     fetchMenu();
   };
 
   const uploadImage = async (id: number, file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    await fetch(`http://localhost:8080/api/products/${id}/image`, {
+    await fetch(`https://annapurna-cafe.onrender.com/api/products/${id}/image`, {
       method: 'POST',
       body: formData
     });
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
   };
 
   const addTable = async () => {
-    await fetch(`http://localhost:8080/api/tables?tableNumber=${newTable}`, { method: 'POST' });
+    await fetch(`https://annapurna-cafe.onrender.com/api/tables?tableNumber=${newTable}`, { method: 'POST' });
     setNewTable('');
     fetchTables();
   };
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
                     <tr key={p.id} className="border-b last:border-0 hover:bg-gray-50">
                       <td className="py-3">
                         {p.imagePath ? (
-                          <img src={`http://localhost:8080/api/products/images/${p.imagePath}`} alt={p.name} className="w-12 h-12 object-cover rounded-md border" />
+                          <img src={`https://annapurna-cafe.onrender.com/api/products/images/${p.imagePath}`} alt={p.name} className="w-12 h-12 object-cover rounded-md border" />
                         ) : (
                           <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center text-xs text-gray-500">No Img</div>
                         )}
@@ -292,8 +292,8 @@ export default function AdminDashboard() {
               {tables.map(t => (
                 <div key={t.id} className="border rounded-xl p-4 text-center">
                   <h4 className="font-bold mb-2">Table {t.tableNumber}</h4>
-                  <img src={`http://localhost:8080/api/tables/qr/${t.qrCodePath}`} alt="QR Code" className="w-full mb-2 border" />
-                  <a href={`http://localhost:8080/api/tables/qr/${t.qrCodePath}`} download className="text-sm text-cafe-primary font-bold">Download PNG</a>
+                  <img src={`https://annapurna-cafe.onrender.com/api/tables/qr/${t.qrCodePath}`} alt="QR Code" className="w-full mb-2 border" />
+                  <a href={`https://annapurna-cafe.onrender.com/api/tables/qr/${t.qrCodePath}`} download className="text-sm text-cafe-primary font-bold">Download PNG</a>
                 </div>
               ))}
             </div>
