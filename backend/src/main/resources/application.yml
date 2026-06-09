@@ -2,9 +2,9 @@ spring:
   application:
     name: cafe-system
   datasource:
-    url: jdbc:mysql://mysql-1cfdd1b0-abhay45ver-c698.g.aivencloud.com:10401/defaultdb?useSSL=true
+    url: jdbc:mysql://mysql-1cfdd1b0-abhay45ver-c698.g.aivencloud.com:10401/defaultdb?sslMode=REQUIRED
     username: avnadmin
-    password: AVNS_8tv0KMQo6Cujv-Z_70q
+    password: AVNS_8tv0KMQo6Cujv-Z_7Oq
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
